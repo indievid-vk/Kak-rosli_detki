@@ -7,13 +7,15 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
-    base: './',
+    base: '/Kak-rosli_detki/',
     plugins: [
       react(), 
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['icon.png'],
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+        },
         manifest: {
           name: 'Как росли детки',
           short_name: 'Как росли детки',
@@ -21,16 +23,17 @@ export default defineConfig(({mode}) => {
           theme_color: '#f97316',
           background_color: '#ffffff',
           display: 'standalone',
-          start_url: '.',
+          start_url: '/Kak-rosli_detki/',
+          scope: '/Kak-rosli_detki/',
           icons: [
             {
-              src: './icon.png',
+              src: '/Kak-rosli_detki/icon.png',
               sizes: '192x192',
               type: 'image/png',
               purpose: 'any maskable'
             },
             {
-              src: './icon.png',
+              src: '/Kak-rosli_detki/icon.png',
               sizes: '512x512',
               type: 'image/png',
               purpose: 'any maskable'
