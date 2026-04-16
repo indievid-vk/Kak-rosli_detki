@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import ChildProfile from './pages/ChildProfile';
 import { StoreProvider } from './store';
 import { InstallPrompt } from './components/InstallPrompt';
+import { InstallEngine } from './components/InstallEngine';
 
 function AppContent() {
   return (
@@ -19,6 +20,7 @@ function AppContent() {
             <Route path="/child/:id" element={<ChildProfile />} />
           </Routes>
           <InstallPrompt />
+          <InstallEngine />
         </main>
       </div>
     </Router>
