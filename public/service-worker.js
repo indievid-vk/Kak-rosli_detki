@@ -5,6 +5,8 @@ const PRECACHE_URLS = [
   '/Kak-rosli_detki/',
   '/Kak-rosli_detki/index.html',
   '/Kak-rosli_detki/manifest.json',
+  '/Kak-rosli_detki/images/icon-192.png',
+  '/Kak-rosli_detki/images/icon-512.png',
 ];
 
 // Установка Service Worker
