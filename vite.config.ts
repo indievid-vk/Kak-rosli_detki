@@ -14,28 +14,28 @@ export default defineConfig(({mode}) => {
       VitePWA({
         registerType: 'autoUpdate',
         workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+          globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,woff}']
         },
         manifest: {
-          name: 'Как росли детки - Дневник развития ребенка',
-          short_name: 'Как росли детки',
-          description: 'Профессиональное приложение для отслеживания событий и развития малыша',
-          theme_color: '#f97316',
-          background_color: '#ffffff',
-          display: 'standalone',
-          orientation: 'portrait',
-          start_url: '/Kak-rosli_detki/',
-          scope: '/Kak-rosli_detki/',
+          name: "Как росли детки - Дневник развития ребенка",
+          short_name: "Как росли детки",
+          description: "Приложение для отслеживания событий и развития ребенка",
+          start_url: "/Kak-rosli_detki/",
+          display: "standalone",
+          background_color: "#ffffff",
+          theme_color: "#f97316",
+          orientation: "portrait",
+          scope: "/Kak-rosli_detki/",
           icons: [
             {
-              src: '/Kak-rosli_detki/images/icon-192.png',
-              sizes: '192x192',
-              type: 'image/png'
+              src: "/Kak-rosli_detki/images/icon-192.png",
+              sizes: "192x192",
+              type: "image/png"
             },
             {
-              src: '/Kak-rosli_detki/images/icon-512.png',
-              sizes: '512x512',
-              type: 'image/png'
+              src: "/Kak-rosli_detki/images/icon-512.png",
+              sizes: "512x512",
+              type: "image/png"
             }
           ]
         }

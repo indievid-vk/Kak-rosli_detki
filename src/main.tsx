@@ -2,13 +2,6 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-import { registerSW } from 'virtual:pwa-register';
-
-// Принудительно регистрируем Service Worker как можно раньше, 
-// чтобы Android Chrome быстрее принял решение что это PWA
-if ('serviceWorker' in navigator) {
-  registerSW({ immediate: true });
-}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
