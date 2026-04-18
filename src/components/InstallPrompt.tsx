@@ -14,6 +14,14 @@ export const InstallPrompt = () => {
       return;
     }
 
+    const checkDeferredPrompt = () => {
+      if ((window as any).deferredPrompt) {
+        setDeferredPrompt((window as any).deferredPrompt);
+      }
+    };
+    
+    checkDeferredPrompt(); // Проверяем сразу при монтировании
+
     const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
     if (!hasSeenWelcome) {
       const timer = setTimeout(() => {
@@ -32,9 +40,17 @@ export const InstallPrompt = () => {
     };
 
     window.addEventListener('beforeinstallprompt', handler);
-    window.addEventListener('appinstalled', () => setIsStandalone(true));
+    window.addEventListener('app-install-ready', checkDeferredPrompt);
+    window.addEventListener('appinstalled', () => {
+      setIsStandalone(true);
+      setShowWelcomeDialog(false);
+      setShowPrompt(false);
+    });
 
-    return () => window.removeEventListener('beforeinstallprompt', handler);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+      window.removeEventListener('app-install-ready', checkDeferredPrompt);
+    };
   }, []);
 
   const handleInstall = async () => {

@@ -77,15 +77,6 @@ export default function Home() {
             </div>
             <p className="text-xl font-bold text-slate-600">Пока нет добавленных детей</p>
             <p className="text-md mt-2 text-slate-500">Нажмите на кнопку + чтобы добавить</p>
-
-            <div className="mt-12 p-5 bg-stone-50 rounded-3xl text-sm text-stone-600 text-left max-w-sm border border-stone-100">
-              <p className="font-bold mb-2 text-stone-800 text-center">Как установить приложение</p>
-              <p className="mb-2">Вы можете добавить его на главный экран телефона для удобного доступа:</p>
-              <ul className="space-y-1 list-disc list-inside">
-                <li><span className="font-semibold">Android:</span> «3 точки» → «Установить приложение»</li>
-                <li><span className="font-semibold">iOS:</span> «Поделиться» → «На экран "Домой"»</li>
-              </ul>
-            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
