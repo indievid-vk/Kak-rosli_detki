@@ -259,14 +259,27 @@ function ChildForm({ initialData, onSave, onCancel }: { initialData?: Child, onS
         <Label htmlFor="middleName" className="text-stone-600 font-bold ml-1">Отчество</Label>
         <Input id="middleName" value={formData.middleName} onChange={e => setFormData(prev => ({ ...prev, middleName: e.target.value }))} className="rounded-xl bg-stone-50 border-stone-200 h-12 px-4" />
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label htmlFor="birthDate" className="text-stone-600 font-bold ml-1">Дата рождения</Label>
-          <Input id="birthDate" type="date" required value={formData.birthDate} onChange={e => setFormData(prev => ({ ...prev, birthDate: e.target.value }))} className="rounded-xl bg-stone-50 border-stone-200 h-12 px-4" />
+          <Input 
+            id="birthDate" 
+            type="date" 
+            required 
+            value={formData.birthDate} 
+            onChange={e => setFormData(prev => ({ ...prev, birthDate: e.target.value }))} 
+            className="rounded-xl bg-stone-50 border-stone-200 h-12 px-4 w-full focus:ring-orange-500 focus:border-orange-500" 
+          />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="birthTime" className="text-stone-600 font-bold ml-1">Время</Label>
-          <Input id="birthTime" type="time" value={formData.birthTime} onChange={e => setFormData(prev => ({ ...prev, birthTime: e.target.value }))} className="rounded-xl bg-stone-50 border-stone-200 h-12 px-4" />
+          <Input 
+            id="birthTime" 
+            type="time" 
+            value={formData.birthTime} 
+            onChange={e => setFormData(prev => ({ ...prev, birthTime: e.target.value }))} 
+            className="rounded-xl bg-stone-50 border-stone-200 h-12 px-4 w-full focus:ring-orange-500 focus:border-orange-500" 
+          />
         </div>
       </div>
       <div className="flex justify-end gap-3 pt-6">
