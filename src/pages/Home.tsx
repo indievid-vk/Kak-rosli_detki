@@ -259,8 +259,8 @@ function ChildForm({ initialData, onSave, onCancel }: { initialData?: Child, onS
         <Label htmlFor="middleName" className="text-stone-600 font-bold ml-1">Отчество</Label>
         <Input id="middleName" value={formData.middleName} onChange={e => setFormData(prev => ({ ...prev, middleName: e.target.value }))} className="rounded-xl bg-stone-50 border-stone-200 h-12 px-4" />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="grid gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-2">
           <Label htmlFor="birthDate" className="text-stone-600 font-bold ml-1">Дата рождения</Label>
           <Input 
             id="birthDate" 
@@ -268,17 +268,17 @@ function ChildForm({ initialData, onSave, onCancel }: { initialData?: Child, onS
             required 
             value={formData.birthDate} 
             onChange={e => setFormData(prev => ({ ...prev, birthDate: e.target.value }))} 
-            className="rounded-xl bg-stone-50 border-stone-200 h-12 px-4 w-full focus:ring-orange-500 focus:border-orange-500" 
+            className="rounded-xl bg-stone-50 border-stone-200 h-12 px-4 w-full focus:ring-orange-500 focus:border-orange-500 appearance-none min-w-0" 
           />
         </div>
-        <div className="grid gap-2">
+        <div className="flex flex-col gap-2">
           <Label htmlFor="birthTime" className="text-stone-600 font-bold ml-1">Время</Label>
           <Input 
             id="birthTime" 
             type="time" 
             value={formData.birthTime} 
             onChange={e => setFormData(prev => ({ ...prev, birthTime: e.target.value }))} 
-            className="rounded-xl bg-stone-50 border-stone-200 h-12 px-4 w-full focus:ring-orange-500 focus:border-orange-500" 
+            className="rounded-xl bg-stone-50 border-stone-200 h-12 px-4 w-full focus:ring-orange-500 focus:border-orange-500 appearance-none min-w-0" 
           />
         </div>
       </div>

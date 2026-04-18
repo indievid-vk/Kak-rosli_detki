@@ -78,8 +78,9 @@ export const InstallPrompt = () => {
         setShowPrompt(false);
         setShowWelcomeDialog(false);
       }
-    } else if (platform === 'ios') {
-      // На iOS просто показываем инструкцию (автоматически вызвать системный промпт нельзя)
+    } else {
+      // Если промпта нет (Android не предложил или это iOS),
+      // показываем общее окно с инструкциями
       setShowWelcomeDialog(true);
     }
   };
@@ -111,55 +112,44 @@ export const InstallPrompt = () => {
               </div>
               
               <h2 className="text-2xl font-bold text-stone-800 mb-3 leading-tight tracking-tight">
-                Быстрый доступ
+                Установка
               </h2>
               <p className="text-stone-500 mb-6 text-sm leading-relaxed">
-                Установите «Как росли детки» на рабочий стол, чтобы записи всегда были под рукой и приложение работало быстрее.
+                Добавьте приложение на рабочий стол для мгновенного доступа.
               </p>
 
               <div className="space-y-4 w-full">
-                {/* Кнопка установки для Android/Chrome */}
-                {(deferredPrompt || platform !== 'ios') && (
+                {/* Кнопка установки (для тех случаев когда она работает) */}
+                {deferredPrompt && (
                   <button 
                     onClick={handleInstall}
-                    disabled={!deferredPrompt && platform !== 'ios'}
-                    className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 ${
-                      deferredPrompt 
-                      ? 'bg-orange-500 text-white shadow-orange-200 hover:bg-orange-600 cursor-pointer' 
-                      : 'bg-stone-100 text-stone-400 cursor-not-allowed invisible'
-                    }`}
+                    className="w-full bg-orange-500 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-orange-200 hover:bg-orange-600 transition-all active:scale-95 cursor-pointer"
                   >
                     <Download className="w-5 h-5" />
                     Установить сейчас
                   </button>
                 )}
                 
-                {/* Инструкции для iOS */}
-                {platform === 'ios' && (
-                  <div className="bg-orange-50/50 p-5 rounded-2xl text-stone-700 text-left border border-orange-100 animate-in slide-in-from-top-2 duration-300">
-                    <p className="font-bold text-orange-600 text-xs uppercase tracking-wider mb-3">Инструкция для iPhone:</p>
-                    <ol className="space-y-3 text-[13px] font-medium">
-                      <li className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-orange-200 text-orange-700 flex items-center justify-center text-[10px] flex-shrink-0">1</span>
-                        <span>Нажмите кнопку <Share className="w-4 h-4 inline mx-0.5 text-blue-500" /> («Поделиться») в меню снизу</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-orange-200 text-orange-700 flex items-center justify-center text-[10px] flex-shrink-0">2</span>
-                        <span>Выберите «На экран "Домой"»</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-orange-200 text-orange-700 flex items-center justify-center text-[10px] flex-shrink-0">3</span>
-                        <span>Нажмите «Добавить» в углу</span>
-                      </li>
-                    </ol>
-                  </div>
-                )}
+                {/* Инструкции (показываем всегда в этом окне для надежности) */}
+                <div className="bg-orange-50/50 p-5 rounded-2xl text-stone-700 text-left border border-orange-100">
+                  <p className="font-bold text-orange-600 text-[10px] uppercase tracking-wider mb-3">Как установить вручную:</p>
+                  <ol className="space-y-3 text-[13px] font-medium text-stone-600">
+                    <li className="flex items-start gap-3">
+                      <span className="w-5 h-5 rounded-full bg-orange-200 text-orange-700 flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">1</span>
+                      <span>Нажмите <strong>«Меню»</strong> или <Share className="w-4 h-4 inline mx-0.5 text-blue-500" /> <strong>«Поделиться»</strong></span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="w-5 h-5 rounded-full bg-orange-200 text-orange-700 flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">2</span>
+                      <span>Выберите пункт <strong>«На экран "Домой"»</strong> или <strong>«Установить»</strong></span>
+                    </li>
+                  </ol>
+                </div>
 
                 <button 
                   onClick={handleDismiss} 
                   className="w-full py-2 text-stone-400 text-sm font-semibold hover:text-stone-600 cursor-pointer transition-colors"
                 >
-                  Продолжать в браузере
+                  Продолжить в браузере
                 </button>
               </div>
             </div>
@@ -168,7 +158,7 @@ export const InstallPrompt = () => {
       )}
 
       {/* 2. ПЛАВАЮЩИЙ ИНДИКАТОР (КАК В "СЛАДКОМ КАЛЬКУЛЯТОРЕ") */}
-      {!showWelcomeDialog && (deferredPrompt || platform === 'ios') && (
+      {!showWelcomeDialog && (
         <button
           onClick={() => setShowWelcomeDialog(true)}
           className="fixed top-6 right-6 z-[9000] bg-white text-orange-500 h-10 px-4 rounded-full font-bold shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-stone-100 flex items-center gap-2 hover:bg-orange-50 active:scale-95 transition-all animate-in fade-in slide-in-from-right-4 duration-500 cursor-pointer group"
