@@ -778,7 +778,6 @@ export default function ChildProfile() {
                         >
                           <div className="flex items-center gap-1">
                             {calculateAge(child.birthDate, record.date)}
-                            <Edit2 className="h-3 w-3 opacity-0 group-hover:opacity-100 text-slate-400 flex-shrink-0" />
                           </div>
                         </TableCell>
                         <TableCell className={`align-top break-words whitespace-normal ${tableLayout === 'fit' ? 'max-w-[20ch]' : 'max-w-[100ch]'}`}>
@@ -838,14 +837,36 @@ export default function ChildProfile() {
                           ) : (
                             <div className="flex items-center gap-1">
                               {new Date(record.date).toLocaleDateString('ru-RU')}
-                              <Edit2 className="h-3 w-3 opacity-0 group-hover:opacity-100 text-slate-400 flex-shrink-0" />
                             </div>
                           )}
                         </TableCell>
-                        <TableCell className="align-top text-right">
-                          <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDelete(record.id); }} className="h-8 w-8 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-full">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                        <TableCell className="align-top py-2 px-1">
+                          <div className="flex flex-col items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={(e) => { 
+                                e.stopPropagation(); 
+                                openEditDialog(record); 
+                              }} 
+                              className="h-8 w-8 text-slate-400 hover:text-orange-500 hover:bg-orange-50 rounded-full"
+                              title="Редактировать"
+                            >
+                              <Edit2 className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={(e) => { 
+                                e.stopPropagation(); 
+                                handleDelete(record.id); 
+                              }} 
+                              className="h-8 w-8 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-full"
+                              title="Удалить"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
