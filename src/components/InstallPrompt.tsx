@@ -6,18 +6,13 @@ export const InstallPrompt = () => {
   const [showPrompt, setShowPrompt] = useState(false);
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
-  const [platform, setPlatform] = useState<'ios' | 'android' | 'other' | null>(null);
+  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
     // 1. Определение платформы
     const userAgent = window.navigator.userAgent.toLowerCase();
-    if (/iphone|ipad|ipod/.test(userAgent)) {
-      setPlatform('ios');
-    } else if (/android/.test(userAgent)) {
-      setPlatform('android');
-    } else {
-      setPlatform('other');
-    }
+    const isIOSDevice = /iphone|ipad|ipod/.test(userAgent);
+    setIsIOS(isIOSDevice);
 
     // 2. Проверка, что приложение уже установлено
     if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true) {
@@ -28,29 +23,26 @@ export const InstallPrompt = () => {
     const checkDeferredPrompt = () => {
       if ((window as any).deferredPrompt) {
         setDeferredPrompt((window as any).deferredPrompt);
-        // Как только событие поймано, показываем баннер, если приветствие уже было когда-то просмотрено
-        if (localStorage.getItem('hasSeenWelcome')) {
-          setShowPrompt(true);
-        }
       }
     };
     
     checkDeferredPrompt();
 
-    // 3. Логика первого входа (приветственный диалог)
+    // 3. Логика первого входа 
     const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
     if (!hasSeenWelcome) {
-      // Увеличиваем задержку для Android, чтобы нативный промпт успел сработать
-      const delay = platform === 'ios' ? 3000 : 12000; 
-      const timer = setTimeout(() => {
-        // Показываем инструкцию ТОЛЬКО если нативного промпта всё еще нет
-        // На Android мы хотим, чтобы пользователь сначала увидел нативную кнопку "Установить"
-        if (!window.deferredPrompt && platform !== 'other') {
+      if (isIOSDevice) {
+        // На iOS нет нативного промпта, показываем свою инструкцию через 3 секунды
+        const timer = setTimeout(() => {
           setShowWelcomeDialog(true);
           localStorage.setItem('hasSeenWelcome', 'true');
-        }
-      }, delay);
-      return () => clearTimeout(timer);
+        }, 3000);
+        return () => clearTimeout(timer);
+      } else {
+        // На Android мы не показываем инструкцию с "точками" автоматически совсем!
+        // Вместо этого мы полагаемся на нативный промпт и наш нижний баннер (showPrompt).
+        localStorage.setItem('hasSeenWelcome', 'true');
+      }
     }
 
     // 4. Слушатели событий
@@ -58,6 +50,7 @@ export const InstallPrompt = () => {
       e.preventDefault();
       (window as any).deferredPrompt = e;
       setDeferredPrompt(e);
+      // Сразу показываем нижний баннер с кнопкой "Установить"
       setShowPrompt(true);
     };
 
