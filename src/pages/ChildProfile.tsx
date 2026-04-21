@@ -16,6 +16,7 @@ import { PrintableFeed } from '../components/PrintableFeed';
 import { toCanvas } from 'html-to-image';
 import { jsPDF } from 'jspdf';
 import { ImageCropperDialog } from '../components/ImageCropperDialog';
+import * as XLSX from 'xlsx';
 
 function MediaViewer({ url, type }: { url: string, type: 'media' | 'audio' }) {
   const [src, setSrc] = useState<string>('');
@@ -461,69 +462,81 @@ export default function ChildProfile() {
   const dictionaryRecords = childRecords.filter(r => r.word);
 
   const exportToCSV = () => {
-    const childFullName = [child.lastName, child.firstName, child.middleName].filter(Boolean).join(' ');
+    const childFullName = [child.firstName, child.lastName, child.middleName].filter(Boolean).join(' ');
     const childBirthInfo = `${new Date(child.birthDate).toLocaleDateString('ru-RU')} ${child.birthTime || ''}`.trim();
     
-    const profileRows = [
-      ['Ребенок', `"${childFullName.replace(/"/g, '""')}"`],
-      ['Дата рождения', `"${childBirthInfo.replace(/"/g, '""')}"`],
-      []
+    // Create data for the workbook
+    const data = [
+      ['Ребенок', childFullName],
+      ['Дата рождения', childBirthInfo],
+      [],
+      ['Слово', 'Смысл', 'Дата', 'Возраст']
     ];
 
-    const headers = ['Слово', 'Смысл', 'Дата', 'Возраст'];
-    const rows = dictionaryRecords.map(r => [
-      `"${(r.word || '').replace(/"/g, '""')}"`,
-      `"${(r.translation || '').replace(/"/g, '""')}"`,
-      new Date(r.date).toLocaleDateString('ru-RU'),
-      calculateAge(child.birthDate, r.date)
-    ]);
-    const csvContent = [
-      ...profileRows.map(e => e.join(";")),
-      headers.join(";"), 
-      ...rows.map(e => e.join(";"))
-    ].join("\n");
-    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    dictionaryRecords.forEach(r => {
+      data.push([
+        r.word || '',
+        r.translation || '',
+        new Date(r.date).toLocaleDateString('ru-RU'),
+        calculateAge(child.birthDate, r.date)
+      ]);
+    });
+
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Словарь");
+
+    // Write file
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `Словарь_${child.firstName}.csv`);
+    link.href = url;
+    link.download = `Словарь_${child.firstName}.xlsx`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const exportFeedToCSV = () => {
     const childFullName = [child.lastName, child.firstName, child.middleName].filter(Boolean).join(' ');
     const childBirthInfo = `${new Date(child.birthDate).toLocaleDateString('ru-RU')} ${child.birthTime || ''}`.trim();
     
-    const profileRows = [
-      ['Ребенок', `"${childFullName.replace(/"/g, '""')}"`],
-      ['Дата рождения', `"${childBirthInfo.replace(/"/g, '""')}"`],
-      []
+    // Create data for the workbook
+    const data = [
+      ['Ребенок', childFullName],
+      ['Дата рождения', childBirthInfo],
+      [],
+      ['Событие', 'Подробности', 'Тарабарское слово', 'Смысл', 'Дата', 'Возраст']
     ];
 
-    const headers = ['Событие', 'Подробности', 'Тарабарское слово', 'Смысл', 'Дата', 'Возраст'];
-    const rows = childRecords.map(r => [
-      `"${(r.title || '').replace(/"/g, '""')}"`,
-      `"${(r.description || '').replace(/"/g, '""')}"`,
-      `"${(r.word || '').replace(/"/g, '""')}"`,
-      `"${(r.translation || '').replace(/"/g, '""')}"`,
-      new Date(r.date).toLocaleDateString('ru-RU'),
-      calculateAge(child.birthDate, r.date)
-    ]);
-    const csvContent = [
-      ...profileRows.map(e => e.join(";")),
-      headers.join(";"), 
-      ...rows.map(e => e.join(";"))
-    ].join("\n");
-    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    childRecords.forEach(r => {
+      data.push([
+        r.title || '',
+        r.description || '',
+        r.word || '',
+        r.translation || '',
+        new Date(r.date).toLocaleDateString('ru-RU'),
+        calculateAge(child.birthDate, r.date)
+      ]);
+    });
+
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Лента событий");
+
+    // Write file
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `Лента_событий_${child.firstName}.csv`);
+    link.href = url;
+    link.download = `Лента_событий_${child.firstName}.xlsx`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>, type: 'audio' | 'video') => {
