@@ -40,10 +40,16 @@ export const InstallPrompt = () => {
     // 3. Логика первого входа (приветственный диалог)
     const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
     if (!hasSeenWelcome) {
+      // Увеличиваем задержку для Android, чтобы нативный промпт успел сработать
+      const delay = platform === 'ios' ? 3000 : 12000; 
       const timer = setTimeout(() => {
-        setShowWelcomeDialog(true);
-        localStorage.setItem('hasSeenWelcome', 'true');
-      }, 2000);
+        // Показываем инструкцию ТОЛЬКО если нативного промпта всё еще нет
+        // На Android мы хотим, чтобы пользователь сначала увидел нативную кнопку "Установить"
+        if (!window.deferredPrompt && platform !== 'other') {
+          setShowWelcomeDialog(true);
+          localStorage.setItem('hasSeenWelcome', 'true');
+        }
+      }, delay);
       return () => clearTimeout(timer);
     }
 
