@@ -115,15 +115,17 @@ export default function Home() {
                           </div>
                         )}
                       </div>
-                      <div className="min-w-0 flex-1 pr-2">
-                        <h2 className="text-xl sm:text-2xl font-bold text-slate-800 leading-tight break-words hyphens-auto" style={{ wordBreak: 'break-word' }}>
-                          {[child.firstName, child.lastName, child.middleName].filter(Boolean).join(' ')}
-                        </h2>
-                        <p className="text-slate-500 text-sm sm:text-base font-medium mt-0.5">{new Date(child.birthDate).toLocaleDateString('ru-RU')}</p>
+                      <div className="min-w-0 flex-1 pr-2 py-3">
+                        <div className="text-xl sm:text-2xl font-bold text-slate-800 leading-tight break-words hyphens-auto flex flex-col gap-0.5" style={{ wordBreak: 'break-word' }}>
+                          {child.firstName && <span>{child.firstName}</span>}
+                          {child.lastName && <span>{child.lastName}</span>}
+                          {child.middleName && <span>{child.middleName}</span>}
+                        </div>
+                        <p className="text-slate-500 text-sm sm:text-base font-medium mt-1.5">{new Date(child.birthDate).toLocaleDateString('ru-RU')}</p>
                       </div>
                     </Link>
                     
-                    <div className="flex items-center gap-0.5 sm:gap-1 mr-2 sm:mr-4 flex-shrink-0">
+                    <div className="flex flex-col items-center justify-center gap-1 sm:gap-2 mr-2 sm:mr-4 my-2 flex-shrink-0">
                       <Dialog open={editingChild?.id === child.id} onOpenChange={(open) => !open && setEditingChild(null)}>
                         <DialogTrigger className="text-slate-400 hover:text-orange-500 hover:bg-white/60 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors" onClick={() => setEditingChild(child)}>
                           <Edit2 className="h-4 w-4 sm:h-5 w-5" />

@@ -576,7 +576,7 @@ export default function ChildProfile() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div className="flex-1 flex items-center min-w-0 py-2">
-            <div className="w-10 h-10 rounded-full overflow-hidden bg-orange-50 mr-3 flex-shrink-0 border-2 border-white shadow-sm">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-orange-50 mr-3 flex-shrink-0 border-2 border-white shadow-sm self-start mt-1">
               {child.photoUrl ? (
                 <img src={child.photoUrl} alt={child.firstName} className="w-full h-full object-cover" />
               ) : (
@@ -585,9 +585,11 @@ export default function ChildProfile() {
                 </div>
               )}
             </div>
-            <h1 className="text-xl font-bold text-slate-800 break-words hyphens-auto" style={{ wordBreak: 'break-word' }}>
-              {[child.firstName, child.lastName, child.middleName].filter(Boolean).join(' ')}
-            </h1>
+            <div className="text-lg sm:text-xl font-bold text-slate-800 break-words hyphens-auto flex flex-col gap-0.5" style={{ wordBreak: 'break-word' }}>
+              {child.firstName && <span>{child.firstName}</span>}
+              {child.lastName && <span>{child.lastName}</span>}
+              {child.middleName && <span>{child.middleName}</span>}
+            </div>
           </div>
         </div>
         <Button variant="outline" onClick={() => setIsDictOpen(true)} className="sm:ml-auto w-full sm:w-auto rounded-full border-orange-200 text-orange-600 hover:bg-orange-50 flex-shrink-0 shadow-sm">

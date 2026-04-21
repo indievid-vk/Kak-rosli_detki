@@ -151,12 +151,14 @@ export const PrintableFeed = forwardRef<HTMLDivElement, PrintableFeedProps>(({ c
           )}
         </div>
         
-        <h1 className="text-4xl font-extrabold mb-2 tracking-tight" style={{ color: colors.orange600 }}>
+        <h1 className="text-4xl font-extrabold mb-4 tracking-tight" style={{ color: colors.orange600 }}>
           Как росли детки
         </h1>
-        <h2 className="text-2xl font-bold mb-2 break-words hyphens-auto" style={{ color: colors.slate700, wordBreak: 'break-word', maxWidth: '100%' }}>
-          {childFullName}
-        </h2>
+        <div className="text-2xl font-bold mb-4 break-words hyphens-auto flex flex-col items-center gap-1" style={{ color: colors.slate700, wordBreak: 'break-word', maxWidth: '100%' }}>
+          {child.firstName && <span>{child.firstName}</span>}
+          {child.lastName && <span>{child.lastName}</span>}
+          {child.middleName && <span>{child.middleName}</span>}
+        </div>
         <div className="flex items-center justify-center gap-2 font-medium break-words whitespace-normal" style={{ color: colors.slate500 }}>
           <Calendar className="w-5 h-5" />
           <span>Дата рождения: {birthDateStr} {child.birthTime && `в ${child.birthTime}`}</span>
