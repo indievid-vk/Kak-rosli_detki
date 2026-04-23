@@ -75,7 +75,7 @@ export default function Home() {
           <DialogTrigger className="absolute -bottom-16 right-0 md:static md:mt-6 inline-flex items-center justify-center rounded-full bg-orange-400 hover:bg-orange-500 text-white w-14 h-14 shadow-md transition-transform hover:scale-105 active:scale-95 z-10">
             <Plus className="h-7 w-7" />
           </DialogTrigger>
-          <DialogContent className="w-[calc(100vw-32px)] max-w-none h-[calc(100svh-32px)] max-h-none rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
+          <DialogContent className="w-[calc(100vw-64px)] max-w-none h-[calc(100svh-64px)] max-h-none rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold text-center mb-2 text-slate-800">Добавить ребенка</DialogTitle>
             </DialogHeader>
