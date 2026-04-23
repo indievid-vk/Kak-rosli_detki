@@ -11,7 +11,7 @@ export const InstallPrompt = () => {
   useEffect(() => {
     // 1. Определение платформы
     const userAgent = window.navigator.userAgent.toLowerCase();
-    const isIOSDevice = /iphone|ipad|ipod/.test(userAgent);
+    const isIOSDevice = /iphone|ipad|ipod/.test(userAgent) || (/macintosh/.test(userAgent) && 'ontouchend' in document);
     setIsIOS(isIOSDevice);
 
     // 2. Проверка, что приложение уже установлено
@@ -28,20 +28,20 @@ export const InstallPrompt = () => {
     
     checkDeferredPrompt();
 
-    // 3. Логика первого входа 
-    const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+    // 3. Логика показа
+    const hasSeenWelcome = sessionStorage.getItem('hasSeenWelcome');
     if (!hasSeenWelcome) {
       if (isIOSDevice) {
         // На iOS нет нативного промпта, показываем свою инструкцию через 3 секунды
         const timer = setTimeout(() => {
           setShowWelcomeDialog(true);
-          localStorage.setItem('hasSeenWelcome', 'true');
+          sessionStorage.setItem('hasSeenWelcome', 'true');
         }, 3000);
         return () => clearTimeout(timer);
       } else {
         // На Android мы не показываем инструкцию с "точками" автоматически совсем!
         // Вместо этого мы полагаемся на нативный промпт и наш нижний баннер (showPrompt).
-        localStorage.setItem('hasSeenWelcome', 'true');
+        sessionStorage.setItem('hasSeenWelcome', 'true');
       }
     }
 

@@ -12,3 +12,15 @@ if (fs.existsSync(b64Path)) {
 } else {
   console.log('icon-base64.txt not found. Skipping restore.');
 }
+
+const appleB64Path = path.resolve('apple-icon-base64.txt');
+const applePngPath = path.resolve('public/apple-icon.png');
+
+if (fs.existsSync(appleB64Path)) {
+  const appleData = fs.readFileSync(appleB64Path, 'utf8');
+  const appleB64Data = appleData.replace(/^data:image\/png;base64,/, '');
+  fs.writeFileSync(applePngPath, Buffer.from(appleB64Data, 'base64'));
+  console.log('Successfully restored public/apple-icon.png from base64 string.');
+} else {
+  console.log('apple-icon-base64.txt not found. Skipping apple-icon restore.');
+}
