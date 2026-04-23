@@ -195,8 +195,8 @@ export default function Home() {
                           className="bg-white border-2 border-orange-200 text-orange-600 text-[11px] sm:text-xs font-bold py-2 px-4 rounded-2xl shadow-xl whitespace-nowrap pointer-events-auto cursor-pointer flex items-center gap-2 group hover:bg-orange-50 transition-colors"
                           onClick={dismissHint}
                         >
-                          <span className="sm:hidden">Нажмите на карточку ребенка</span>
-                          <span className="hidden sm:inline">Нажмите на карточку для создания ленты</span>
+                          <span className="sm:hidden">Нажмите на карточку для добавления события</span>
+                          <span className="hidden sm:inline">Нажмите на карточку для добавления события</span>
                           <div className="bg-orange-100 p-1 rounded-full group-hover:bg-orange-200 transition-colors">
                             <X className="h-3 w-3" />
                           </div>
