@@ -598,10 +598,10 @@ export default function ChildProfile() {
                 </div>
               )}
             </div>
-            <div className="text-lg sm:text-xl font-bold text-slate-800 break-words hyphens-auto flex flex-col gap-0.5" style={{ wordBreak: 'break-word' }}>
-              {child.firstName && <span>{child.firstName}</span>}
-              {child.lastName && <span>{child.lastName}</span>}
-              {child.middleName && <span>{child.middleName}</span>}
+            <div className="text-lg sm:text-xl font-bold text-slate-800 break-words hyphens-auto flex flex-col gap-0.5 sm:gap-1" style={{ wordBreak: 'break-word' }}>
+              {child.firstName && <span className="leading-none">{child.firstName}</span>}
+              {child.lastName && <span className="leading-none">{child.lastName}</span>}
+              {child.middleName && <span className="leading-none">{child.middleName}</span>}
             </div>
           </div>
         </div>
@@ -632,7 +632,7 @@ export default function ChildProfile() {
                 >
                   <Plus className="h-5 w-5" />
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px] rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
+                <DialogContent className="max-w-[calc(100%-24px)] sm:max-w-[425px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
                   <DialogHeader>
                     <DialogTitle className="text-2xl font-bold text-center mb-2 text-slate-800">
                       {editingRecordId ? 'Редактирование записи' : 'Новая запись'}
@@ -901,7 +901,7 @@ export default function ChildProfile() {
       </div>
 
       <Dialog open={!!selectedRecord} onOpenChange={(open) => !open && setSelectedRecord(null)}>
-        <DialogContent className="sm:max-w-[500px] rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
+        <DialogContent className="max-w-[calc(100%-24px)] sm:max-w-[500px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
           {selectedRecord && (
             <>
               <DialogHeader>
@@ -983,7 +983,7 @@ export default function ChildProfile() {
       </Dialog>
 
       <Dialog open={isDictOpen} onOpenChange={setIsDictOpen}>
-        <DialogContent className="sm:max-w-[600px] rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md max-h-[80vh] flex flex-col">
+        <DialogContent className="max-w-[calc(100%-24px)] sm:max-w-[600px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md max-h-[92vh] sm:max-h-[80vh] flex flex-col">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold flex items-center gap-2 text-slate-800">
               <BookOpen className="h-6 w-6 text-orange-400" />
@@ -1079,7 +1079,7 @@ export default function ChildProfile() {
       </Dialog>
 
       <Dialog open={!!recordToDelete} onOpenChange={(open) => !open && setRecordToDelete(null)}>
-        <DialogContent className="sm:max-w-[425px] rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
+        <DialogContent className="max-w-[calc(100%-24px)] sm:max-w-[425px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-center mb-2 text-slate-800">Удаление</DialogTitle>
           </DialogHeader>
@@ -1098,7 +1098,7 @@ export default function ChildProfile() {
       </Dialog>
 
       <Dialog open={!!alertMessage} onOpenChange={(open) => !open && setAlertMessage(null)}>
-        <DialogContent className="sm:max-w-[425px] rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
+        <DialogContent className="max-w-[calc(100%-24px)] sm:max-w-[425px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-center mb-2 text-slate-800">Внимание</DialogTitle>
           </DialogHeader>

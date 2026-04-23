@@ -75,7 +75,7 @@ export default function Home() {
           <DialogTrigger className="absolute -bottom-16 right-0 md:static md:mt-6 inline-flex items-center justify-center rounded-full bg-orange-400 hover:bg-orange-500 text-white w-14 h-14 shadow-md transition-transform hover:scale-105 active:scale-95 z-10">
             <Plus className="h-7 w-7" />
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
+          <DialogContent className="max-w-[calc(100%-24px)] sm:max-w-[425px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold text-center mb-2 text-slate-800">Добавить ребенка</DialogTitle>
             </DialogHeader>
@@ -105,7 +105,7 @@ export default function Home() {
               <div key={child.id} className="relative">
                 <Card className={`overflow-hidden border-2 sm:border-4 border-white shadow-sm hover:shadow-md transition-all rounded-[1.5rem] sm:rounded-[2.5rem] ${cardBg} group`}>
                   <CardContent className="p-0 flex items-center min-w-0">
-                    <Link to={`/child/${child.id}`} className="flex-1 min-w-0 flex items-center p-3 sm:p-5">
+                    <Link to={`/child/${child.id}`} className="flex-1 min-w-0 flex items-center py-2 px-3 sm:py-4 sm:px-5">
                       <div className="w-14 h-20 sm:w-20 sm:h-28 rounded-2xl sm:rounded-[2rem] overflow-hidden bg-white mr-3 sm:mr-5 flex-shrink-0 border-2 sm:border-4 border-white shadow-sm transition-transform group-hover:scale-105">
                         {child.photoUrl ? (
                           <img src={child.photoUrl} alt={child.firstName} className="w-full h-full object-cover" />
@@ -115,11 +115,11 @@ export default function Home() {
                           </div>
                         )}
                       </div>
-                      <div className="min-w-0 flex-1 pr-2 py-3">
-                        <div className="text-xl sm:text-2xl font-bold text-slate-800 leading-tight break-words hyphens-auto flex flex-col gap-0.5" style={{ wordBreak: 'break-word' }}>
-                          {child.firstName && <span>{child.firstName}</span>}
-                          {child.lastName && <span>{child.lastName}</span>}
-                          {child.middleName && <span>{child.middleName}</span>}
+                      <div className="min-w-0 flex-1 pr-2 py-1">
+                        <div className="text-xl sm:text-2xl font-bold text-slate-800 leading-tight break-words hyphens-auto flex flex-col gap-0.5 sm:gap-1" style={{ wordBreak: 'break-word' }}>
+                          {child.firstName && <span className="leading-none">{child.firstName}</span>}
+                          {child.lastName && <span className="leading-none">{child.lastName}</span>}
+                          {child.middleName && <span className="leading-none">{child.middleName}</span>}
                         </div>
                         <p className="text-slate-500 text-sm sm:text-base font-medium mt-1.5">{new Date(child.birthDate).toLocaleDateString('ru-RU')}</p>
                       </div>
@@ -130,7 +130,7 @@ export default function Home() {
                         <DialogTrigger className="text-slate-400 hover:text-orange-500 hover:bg-white/60 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors" onClick={() => setEditingChild(child)}>
                           <Edit2 className="h-4 w-4 sm:h-5 w-5" />
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px] rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
+                        <DialogContent className="max-w-[calc(100%-24px)] sm:max-w-[425px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
                           <DialogHeader>
                             <DialogTitle className="text-2xl font-bold text-center mb-2 text-slate-800">Редактировать</DialogTitle>
                           </DialogHeader>
@@ -213,11 +213,11 @@ export default function Home() {
       </div>
 
       <Dialog open={!!childToDelete} onOpenChange={(open) => !open && setChildToDelete(null)}>
-        <DialogContent className="sm:max-w-[425px] rounded-3xl">
+        <DialogContent className="max-w-[calc(100%-24px)] sm:max-w-[425px] rounded-[1.5rem] sm:rounded-3xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-center mb-2">Удаление</DialogTitle>
           </DialogHeader>
-          <div className="text-center text-stone-600 mb-6">
+          <div className="text-center text-stone-600 mb-6 px-2">
             Вы уверены, что хотите удалить карточку ребенка? Все записи также будут удалены.
           </div>
           <div className="flex justify-center gap-4">

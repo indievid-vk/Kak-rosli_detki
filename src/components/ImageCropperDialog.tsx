@@ -30,7 +30,7 @@ export function ImageCropperDialog({ isOpen, imageSrc, onClose, onCropComplete, 
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[500px] rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md z-[100]">
+      <DialogContent className="max-w-[calc(100%-24px)] sm:max-w-[500px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md z-[100]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center mb-2 text-slate-800">Редактировать фото</DialogTitle>
         </DialogHeader>
