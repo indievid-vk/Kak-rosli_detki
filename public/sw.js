@@ -1,47 +1,20 @@
-const CACHE_NAME = 'pwa-cache-v4';
-
-const urlsToCache = [
-  './',
-  'index.html',
-  'manifest.json',
-  'icon-192.png',
-  'icon-512.png',
-  'pwa-setup.js'
-];
+const CACHE_NAME = 'pwa-cache-v5';
 
 self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('Кэш открыт');
-                return cache.addAll(urlsToCache);
-            })
-    );
+    // Не кэшируем жестко заранее, чтобы не блокировать установку SW при ошибке 404
+    self.skipWaiting();
 });
 
 self.addEventListener('fetch', event => {
+    // Минимальный fetch handler требуется для PWA prompt
+    if (event.request.method !== 'GET') return;
+    
     event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request);
-            })
+        fetch(event.request).catch(() => caches.match(event.request))
     );
 });
 
 self.addEventListener('activate', event => {
-    const cacheWhitelist = [CACHE_NAME];
-    event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames.map(cacheName => {
-                    if (cacheWhitelist.indexOf(cacheName) === -1) {
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        })
-    );
+    event.waitUntil(clients.claim());
 });
+
