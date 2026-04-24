@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pwa-cache-v5';
+const CACHE_NAME = 'pwa-cache-v6';
 
 const urlsToCache = [
   './',
@@ -6,6 +6,7 @@ const urlsToCache = [
   'manifest.json',
   'icon-192.png',
   'icon-512.png',
+  'maskable-icon-512.png',
   'pwa-setup.js'
 ];
 
