@@ -177,7 +177,7 @@ function RecordForm({
 export default function ChildProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { children, records, addRecord, updateRecord, deleteRecord } = useStore();
+  const { children, records, addRecord, updateRecord, deleteRecord, setIsModalOpen } = useStore();
   const child = children.find(c => c.id === id);
 
   const [isEventOpen, setIsEventOpen] = useState(false);
@@ -196,6 +196,10 @@ export default function ChildProfile() {
   const [isSaving, setIsSaving] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    setIsModalOpen(isEventOpen || isDictOpen || selectedRecord !== null || editingRecordId !== null || recordToDelete !== null || alertMessage !== null || cropImageSrc !== null);
+  }, [isEventOpen, isDictOpen, selectedRecord, editingRecordId, recordToDelete, alertMessage, cropImageSrc, setIsModalOpen]);
   
   // Search, Sort, Filter state
   const [searchQuery, setSearchQuery] = useState('');

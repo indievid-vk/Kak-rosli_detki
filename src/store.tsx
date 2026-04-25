@@ -46,6 +46,8 @@ interface StoreContextType {
   refreshData: () => Promise<void>;
   isAboutOpen: boolean;
   setIsAboutOpen: (open: boolean) => void;
+  isModalOpen: boolean;
+  setIsModalOpen: (open: boolean) => void;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -54,6 +56,7 @@ export function StoreProvider({ children: reactChildren }: { children: ReactNode
   const [children, setChildren] = useState<Child[]>([]);
   const [records, setRecords] = useState<EventRecord[]>([]);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const refreshData = async () => {
     try {
@@ -176,7 +179,7 @@ export function StoreProvider({ children: reactChildren }: { children: ReactNode
 
   return (
     <StoreContext.Provider value={{
-      children, records, addChild, updateChild, deleteChild, addRecord, updateRecord, deleteRecord, refreshData, isAboutOpen, setIsAboutOpen
+      children, records, addChild, updateChild, deleteChild, addRecord, updateRecord, deleteRecord, refreshData, isAboutOpen, setIsAboutOpen, isModalOpen, setIsModalOpen
     }}>
       {reactChildren}
     </StoreContext.Provider>

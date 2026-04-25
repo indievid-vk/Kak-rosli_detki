@@ -12,13 +12,17 @@ import { ImageCropperDialog } from '../components/ImageCropperDialog';
 import { AboutApp } from '../components/AboutApp';
 
 export default function Home() {
-  const { children, addChild, updateChild, deleteChild } = useStore();
+  const { children, addChild, updateChild, deleteChild, setIsModalOpen } = useStore();
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingChild, setEditingChild] = useState<Child | null>(null);
   const [childToDelete, setChildToDelete] = useState<string | null>(null);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   const [showHint, setShowHint] = useState(false);
+
+  useEffect(() => {
+    setIsModalOpen(isAddOpen || editingChild !== null || childToDelete !== null || alertMessage !== null);
+  }, [isAddOpen, editingChild, childToDelete, alertMessage, setIsModalOpen]);
 
   useEffect(() => {
     // Show hint if there is at least one child and hint hasn't been dismissed
