@@ -55,7 +55,7 @@ export function AboutApp({ className }: { className?: string }) {
           <div className="flex-1 overflow-y-auto bg-white flex flex-col">
             <div className="px-6 pt-6 pb-6 text-center shrink-0 flex flex-col items-center">
               <div className="w-24 h-24 rounded-[1.5rem] overflow-hidden shadow-sm border border-stone-100 flex-shrink-0 mb-6">
-                <img src="/icon-512-rounded.png" alt="Логотип приложения" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "/apple-icon.png"; }} />
+                <img src={`${import.meta.env.BASE_URL}icon-512-rounded.png`} alt="Логотип приложения" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = `${import.meta.env.BASE_URL}apple-icon.png`; }} />
               </div>
               
               <h2 className="text-[22px] font-bold text-slate-900 mb-3 tracking-tight">История создания приложения</h2>

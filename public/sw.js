@@ -1,10 +1,10 @@
 const CACHE_NAME = 'pwa-diary-v110';
 
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/pwa-setup.js'
+  './',
+  'index.html',
+  'manifest.json',
+  'pwa-setup.js'
 ];
 
 self.addEventListener('install', event => {
@@ -60,7 +60,7 @@ self.addEventListener('fetch', event => {
                 }).catch(() => {
                     // Если сеть упала и это навигация — возвращаем index.html из кэша
                     if (event.request.mode === 'navigate') {
-                        return caches.match('/');
+                        return caches.match('./');
                     }
                 });
             })

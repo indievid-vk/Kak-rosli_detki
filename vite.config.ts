@@ -6,7 +6,7 @@ import {defineConfig, loadEnv} from 'vite';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
-    base: '/', // Absolute path is needed for SPA routing
+    base: '/Kak-rosli_detki/', // Required for GitHub Pages sub-path deployment
     plugins: [
       react(), 
       tailwindcss()

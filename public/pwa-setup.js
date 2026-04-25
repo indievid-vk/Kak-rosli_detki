@@ -25,7 +25,7 @@ if ('serviceWorker' in navigator) {
         }
 
         function registerSW() {
-            navigator.serviceWorker.register('/sw.js')
+            navigator.serviceWorker.register('sw.js')
                 .then(function(registration) {
                     console.log('[PWA] ServiceWorker зарегистрирован: ', registration.scope);
                 })
