@@ -6,11 +6,11 @@ import { exportData, importData } from '../lib/db';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export function BackupFooter() {
-  const { refreshData, isAboutOpen } = useStore();
+  const { refreshData, isAboutOpen, children } = useStore();
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  if (isAboutOpen) return null;
+  if (isAboutOpen || children.length === 0) return null;
 
   const handleExport = async () => {
     setIsProcessing(true);

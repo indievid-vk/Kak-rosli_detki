@@ -44,35 +44,25 @@ export function AboutApp({ className }: { className?: string }) {
       </Button>
 
       <Dialog open={isAboutOpen} onOpenChange={setIsAboutOpen}>
-        <DialogContent className="max-w-md sm:max-w-[500px] w-full p-0 gap-0 sm:rounded-[2rem] bg-white border-none shadow-2xl h-[100dvh] sm:h-[85vh] max-h-[100dvh] overflow-hidden flex flex-col pointer-events-auto z-50">
-          <div className="flex items-center justify-center p-4 relative bg-white shrink-0">
+        <DialogContent className="w-[calc(100vw-10mm)] h-[calc(100dvh-10mm)] max-w-md sm:max-w-[500px] sm:h-[85vh] max-h-[100dvh] p-0 gap-0 rounded-[1.5rem] sm:rounded-[2rem] bg-white border-none shadow-2xl overflow-hidden flex flex-col pointer-events-auto z-50">
+          <div className="flex items-center justify-center p-4 relative bg-white shrink-0 shadow-sm z-10">
              <button onClick={() => setIsAboutOpen(false)} className="absolute left-4 p-2 text-stone-600 hover:bg-stone-100 rounded-full transition-colors">
                <ArrowLeft className="w-6 h-6" />
              </button>
              <h2 className="text-xl font-semibold text-stone-800">О приложении</h2>
           </div>
           
-          <div className="flex-1 overflow-y-auto bg-white flex flex-col">
-            <div className="px-6 pt-6 pb-6 text-center shrink-0 flex flex-col items-center">
-              <div className="w-24 h-24 rounded-[1.5rem] overflow-hidden shadow-sm border border-stone-100 flex-shrink-0 mb-6">
-                <img src={`${import.meta.env.BASE_URL}icon-512-rounded.png`} alt="Логотип приложения" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = `${import.meta.env.BASE_URL}apple-icon.png`; }} />
-              </div>
-              
-              <h2 className="text-[22px] font-bold text-slate-900 mb-3 tracking-tight">История создания приложения</h2>
-              <p className="text-stone-600 text-[15px] leading-[1.6] max-w-sm mx-auto font-medium">
-                Идея сохранять важные, интересные, курьёзные моменты деток родилась, когда наши дети были маленькими и мы записывали, снимали их разными доступными способами, например, тараборские слова записывали в табличку. Программировать мы не умели, вот и записывали, где придется. Сейчас в эру нейросетей получилось создать простое приложение для записи событий деток
-              </p>
-            </div>
-
-            <div className="bg-white border top-shadow relative rounded-t-[3rem] p-6 shadow-[0_-8px_30px_-15px_rgba(0,0,0,0.08)] flex-1 border-stone-100">
-               <div className="space-y-8 mt-2">
+          <div className="flex-1 overflow-y-auto bg-stone-50 flex flex-col">
+            <div className="p-6 bg-white flex-1 flex flex-col space-y-8">
                  <div>
                     <div className="flex items-center gap-3 mb-3">
-                       <Heart className="w-6 h-6 text-pink-500" strokeWidth={2.5} />
-                       <h3 className="text-[19px] font-bold text-slate-900">Абсолютно бесплатно</h3>
+                       <div className="w-7 h-7 rounded-sm overflow-hidden shadow-sm flex-shrink-0">
+                         <img src={`${(import.meta as any).env.BASE_URL}icon-512-rounded.png`} alt="Логотип" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = `${(import.meta as any).env.BASE_URL}apple-icon.png`; }} />
+                       </div>
+                       <h3 className="text-[19px] font-bold text-slate-900 leading-tight">История создания приложения</h3>
                      </div>
                      <p className="text-stone-600 leading-relaxed text-[15px]">
-                       Приложение мы создали как полезный инструмент для своей семьи и решили поделиться им со всеми. Оно совершенно бесплатно и не содержит скрытых платежей или рекламы.
+                       Идея сохранять важные, интересные, курьёзные моменты деток родилась, когда наши дети были маленькими и мы записывали, снимали их разными доступными способами, например, тараборские слова записывали в табличку. Программировать мы не умели, вот и записывали, где придется. Сейчас в эру нейросетей получилось создать простое приложение для записи событий деток.
                      </p>
                  </div>
 
@@ -120,6 +110,16 @@ export function AboutApp({ className }: { className?: string }) {
                       </div>
                  </div>
 
+                 <div>
+                    <div className="flex items-center gap-3 mb-3">
+                       <Heart className="w-6 h-6 text-pink-500" strokeWidth={2.5} />
+                       <h3 className="text-[19px] font-bold text-slate-900">Абсолютно бесплатно</h3>
+                     </div>
+                     <p className="text-stone-600 leading-relaxed text-[15px]">
+                       Приложение мы создали как полезный инструмент для своей семьи и решили поделиться им со всеми. Оно совершенно бесплатно и не содержит скрытых платежей или рекламы.
+                     </p>
+                 </div>
+
                  <div className="pb-8">
                     <div className="flex items-center gap-3 mb-3">
                        <Plus className="w-6 h-6 text-amber-500" strokeWidth={2.5} />
@@ -129,7 +129,6 @@ export function AboutApp({ className }: { className?: string }) {
                        Если дневничок будет вам полезен, в будущем мы можем добавить облачную синхронизацию. Тогда оба родителя смогут одновременно дополнять общую историю и видеть записи друг друга в реальном времени.
                      </p>
                  </div>
-               </div>
             </div>
           </div>
         </DialogContent>
@@ -153,3 +152,4 @@ export function AboutApp({ className }: { className?: string }) {
     </>
   );
 }
+
