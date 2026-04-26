@@ -140,7 +140,7 @@ export default function Home() {
                         <DialogTrigger className="text-slate-400 hover:text-orange-500 hover:bg-white/60 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors" onClick={() => setEditingChild(child)}>
                           <Edit2 className="h-4 w-4 sm:h-5 w-5" />
                         </DialogTrigger>
-                        <DialogContent className="w-[calc(100vw - 10mm)] h-[calc(100dvh - 10mm)] max-w-md sm:max-w-[500px] sm:h-[85vh] max-h-[100dvh] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md p-0 gap-0 overflow-hidden flex flex-col">
+                        <DialogContent className="w-[calc(100vw-10mm)] h-[calc(100dvh-10mm)] max-w-md sm:max-w-[500px] sm:h-[85vh] max-h-[100dvh] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md p-0 gap-0 overflow-hidden flex flex-col">
                           <div className="flex items-center justify-center p-4 sm:p-6 relative shrink-0 border-b border-stone-100/50">
                             <DialogHeader>
                               <DialogTitle className="text-2xl font-bold text-center text-slate-800">Редактировать</DialogTitle>

@@ -907,7 +907,7 @@ export default function ChildProfile() {
       </div>
 
       <Dialog open={!!selectedRecord} onOpenChange={(open) => !open && setSelectedRecord(null)}>
-        <DialogContent className="max-w-[calc(100% - 24px)] sm:max-w-[500px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
+        <DialogContent className="max-w-[calc(100%-24px)] sm:max-w-[500px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md">
           {selectedRecord && (
             <>
               <DialogHeader>
@@ -989,7 +989,7 @@ export default function ChildProfile() {
       </Dialog>
 
       <Dialog open={isDictOpen} onOpenChange={setIsDictOpen}>
-        <DialogContent className="max-w-[calc(100% - 24px)] sm:max-w-[600px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md max-h-[92vh] sm:max-h-[80vh] flex flex-col">
+        <DialogContent className="max-w-[calc(100%-24px)] sm:max-w-[600px] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md max-h-[92vh] sm:max-h-[80vh] flex flex-col">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold flex items-center gap-2 text-slate-800">
               <BookOpen className="h-6 w-6 text-orange-400" />

@@ -1,10 +1,14 @@
-const CACHE_NAME = 'pwa-diary-v110';
+const CACHE_NAME = 'pwa-diary-v111';
 
+// We only cache the core entry point and manifest. 
+// Other assets are handled by the browser or runtime cache.
 const urlsToCache = [
   './',
   'index.html',
   'manifest.json',
-  'pwa-setup.js'
+  'pwa-setup.js',
+  'icon-512.png',
+  'apple-icon.png'
 ];
 
 self.addEventListener('install', event => {
@@ -12,7 +16,7 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('[SW] Кэширование начальных ресурсов');
+                console.log('[SW] Caching core assets');
                 return cache.addAll(urlsToCache);
             })
     );
@@ -24,7 +28,7 @@ self.addEventListener('activate', event => {
             return Promise.all(
                 cacheNames.map(cacheName => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('[SW] Удаление старого кэша:', cacheName);
+                        console.log('[SW] Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
@@ -34,35 +38,33 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-    // Пропускаем не-GET запросы и запросы к HMR/Vite внутренностям
-    if (event.request.method !== 'GET' || event.request.url.includes('node_modules') || event.request.url.includes('@vite')) {
+    if (event.request.method !== 'GET') return;
+
+    const url = new URL(event.request.url);
+
+    // Don't cache dev server stuff
+    if (url.hostname === 'localhost' || url.pathname.includes('@vite') || url.pathname.includes('node_modules')) {
         return;
     }
 
     event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                // Если есть в кэше — возвращаем
-                if (response) {
-                    return response;
-                }
-                
-                // Иначе идем в сеть
-                return fetch(event.request).then(networkResponse => {
-                    // Не кэшируем динамические запросы или ошибки
-                    if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-                        return networkResponse;
-                    }
+        caches.match(event.request).then(response => {
+            // Return from cache if found
+            if (response) {
+                return response;
+            }
 
-                    // Кэшируем только важные статические файлы (опционально)
-                    // Для разработки сейчас лучше просто возвращать сеть
-                    return networkResponse;
-                }).catch(() => {
-                    // Если сеть упала и это навигация — возвращаем index.html из кэша
-                    if (event.request.mode === 'navigate') {
-                        return caches.match('./');
-                    }
-                });
-            })
+            // Otherwise, fetch from network
+            return fetch(event.request).then(networkResponse => {
+                // If it's a valid response, we could cache it here (runtime cache), 
+                // but for now we stay lean to avoid "white screen" on build changes.
+                return networkResponse;
+            }).catch(() => {
+                // Return index.html for navigation requests when offline
+                if (event.request.mode === 'navigate') {
+                    return caches.match('./') || caches.match('index.html');
+                }
+            });
+        })
     );
 });

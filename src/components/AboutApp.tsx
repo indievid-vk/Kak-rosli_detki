@@ -44,7 +44,7 @@ export function AboutApp({ className }: { className?: string }) {
       </Button>
 
       <Dialog open={isAboutOpen} onOpenChange={setIsAboutOpen}>
-        <DialogContent className="w-[calc(100vw - 10mm)] h-[calc(100dvh - 10mm)] max-w-md sm:max-w-[500px] sm:h-[85vh] max-h-[100dvh] p-0 gap-0 rounded-[1.5rem] sm:rounded-[2rem] bg-white border-none shadow-2xl overflow-hidden flex flex-col pointer-events-auto z-50">
+        <DialogContent className="w-[calc(100vw-10mm)] h-[calc(100dvh-10mm)] max-w-md sm:max-w-[500px] sm:h-[85vh] max-h-[100dvh] p-0 gap-0 rounded-[1.5rem] sm:rounded-[2rem] bg-white border-none shadow-2xl overflow-hidden flex flex-col pointer-events-auto z-50">
           <div className="flex items-center justify-center p-4 relative bg-white shrink-0 shadow-sm z-10">
              <button onClick={() => setIsAboutOpen(false)} className="absolute left-4 p-2 text-stone-600 hover:bg-stone-100 rounded-full transition-colors">
                <ArrowLeft className="w-6 h-6" />

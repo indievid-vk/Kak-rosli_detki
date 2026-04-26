@@ -5,14 +5,39 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 export function WelcomePopup() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
 
   useEffect(() => {
-    // Show popup with a small delay after load
+    // Listen for update from pwa-setup.js
+    const handleUpdate = () => {
+      setIsUpdateAvailable(true);
+      setIsOpen(true); // Re-open if update found
+    };
+
+    window.addEventListener('pwa-update-available', handleUpdate);
+
+    // Show initial welcome with a small delay
     const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+      // If no update found yet, show normal welcome
+      if (!isUpdateAvailable) {
+        setIsOpen(true);
+      }
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('pwa-update-available', handleUpdate);
+      clearTimeout(timer);
+    };
+  }, [isUpdateAvailable]);
+
+  const handleAction = () => {
+    if (isUpdateAvailable) {
+      // Force reload to apply update
+      window.location.reload();
+    } else {
+      setIsOpen(false);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -40,20 +65,15 @@ export function WelcomePopup() {
             <div className="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center">
               <Heart className="w-10 h-10 text-pink-500 fill-pink-500" />
             </div>
-            <motion.div
-              animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [1, 0.8, 1] 
-              }}
-              transition={{ 
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center"
-            >
-              <Heart className="w-3 h-3 text-white fill-white" />
-            </motion.div>
+            {isUpdateAvailable && (
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute -top-1 -right-1 w-6 h-6 bg-orange-400 rounded-full flex items-center justify-center border-2 border-white"
+              >
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+              </motion.div>
+            )}
           </motion.div>
 
           <motion.div
@@ -62,20 +82,22 @@ export function WelcomePopup() {
             transition={{ delay: 0.4 }}
           >
             <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent mb-2">
-              Привет!
+              {isUpdateAvailable ? 'Обновление!' : 'Привет!'}
             </h2>
             <p className="text-stone-500 text-sm leading-relaxed mb-6 px-2">
-              Рады видеть вас снова. Пусть каждый момент с вашими детьми будет особенным ❤️
+              {isUpdateAvailable 
+                ? 'Мы улучшили приложение! Нажмите кнопку ниже, чтобы применить изменения.'
+                : 'Рады видеть вас снова. Пусть каждый момент с вашими детьми будет особенным ❤️'}
             </p>
           </motion.div>
 
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => setIsOpen(false)}
-            className="w-full py-4 bg-orange-400 hover:bg-orange-500 text-white rounded-2xl font-bold transition-colors shadow-lg shadow-orange-100"
+            onClick={handleAction}
+            className={`w-full py-4 ${isUpdateAvailable ? 'bg-orange-500' : 'bg-orange-400'} hover:opacity-90 text-white rounded-2xl font-bold transition-all shadow-lg shadow-orange-100 flex items-center justify-center gap-2`}
           >
-            Начать
+            {isUpdateAvailable ? 'Обновить сейчас' : 'Начать'}
           </motion.button>
         </div>
       </DialogContent>
