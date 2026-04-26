@@ -19,6 +19,29 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-icon.png?v=110">
     <link rel="apple-touch-icon" sizes="152x152" href="apple-icon.png?v=110">
     <link rel="apple-touch-icon" sizes="167x167" href="apple-icon.png?v=110">
+    
+    <script>
+      // Global error handler for chunk loading errors to prevent white screens
+      window.addEventListener('error', (e) => {
+        if (e.message && (e.message.includes('Loading chunk') || e.message.includes('Script error'))) {
+          const lastReload = localStorage.getItem('pwa_last_error_reload');
+          const now = Date.now();
+          if (!lastReload || (now - parseInt(lastReload) > 5000)) {
+            localStorage.setItem('pwa_last_error_reload', now.toString());
+            window.location.reload(true);
+          }
+        }
+      }, true);
+
+      // Fallback: if root is empty after 4 seconds, something is wrong, reload
+      setTimeout(() => {
+        const root = document.getElementById('root');
+        if (root && root.innerHTML === '') {
+           console.log('App failed to render, trying forced reload...');
+           window.location.reload(true);
+        }
+      }, 4000);
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,14 +1,10 @@
-const CACHE_NAME = 'pwa-diary-v111';
+const CACHE_NAME = 'pwa-diary-v112';
 
-// We only cache the core entry point and manifest. 
-// Other assets are handled by the browser or runtime cache.
 const urlsToCache = [
   './',
   'index.html',
   'manifest.json',
-  'pwa-setup.js',
-  'icon-512.png',
-  'apple-icon.png'
+  'pwa-setup.js'
 ];
 
 self.addEventListener('install', event => {
@@ -16,7 +12,6 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('[SW] Caching core assets');
                 return cache.addAll(urlsToCache);
             })
     );
@@ -28,7 +23,6 @@ self.addEventListener('activate', event => {
             return Promise.all(
                 cacheNames.map(cacheName => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('[SW] Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
@@ -42,28 +36,24 @@ self.addEventListener('fetch', event => {
 
     const url = new URL(event.request.url);
 
-    // Don't cache dev server stuff
-    if (url.hostname === 'localhost' || url.pathname.includes('@vite') || url.pathname.includes('node_modules')) {
+    // Skip dev and cross-origin
+    if (url.hostname === 'localhost' || url.pathname.includes('@vite')) return;
+
+    // STRATEGY: Network First for index.html/navigation
+    if (event.request.mode === 'navigate') {
+        event.respondWith(
+            fetch(event.request).catch(() => {
+                return caches.match('./') || caches.match('index.html');
+            })
+        );
         return;
     }
 
+    // STRATEGY: Cache First for other static assets
     event.respondWith(
         caches.match(event.request).then(response => {
-            // Return from cache if found
-            if (response) {
-                return response;
-            }
-
-            // Otherwise, fetch from network
-            return fetch(event.request).then(networkResponse => {
-                // If it's a valid response, we could cache it here (runtime cache), 
-                // but for now we stay lean to avoid "white screen" on build changes.
-                return networkResponse;
-            }).catch(() => {
-                // Return index.html for navigation requests when offline
-                if (event.request.mode === 'navigate') {
-                    return caches.match('./') || caches.match('index.html');
-                }
+            return response || fetch(event.request).catch(() => {
+                // Return nothing if asset not found and offline
             });
         })
     );

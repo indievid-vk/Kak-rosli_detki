@@ -37,16 +37,3 @@ if ('serviceWorker' in navigator) {
         }
     });
 }
-
-// Add global error handler for chunk loading errors (to prevent white screens)
-window.addEventListener('error', (e) => {
-    if (e.message.includes('Loading chunk') || e.message.includes('Script error')) {
-        const lastReload = localStorage.getItem('pwa_last_error_reload');
-        const now = Date.now();
-        // Prevent infinite loops (reload only if more than 5 seconds passed since last reload)
-        if (!lastReload || now - parseInt(lastReload) > 5000) {
-            localStorage.setItem('pwa_last_error_reload', now.toString());
-            window.location.reload();
-        }
-    }
-}, true);
