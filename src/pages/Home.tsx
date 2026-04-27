@@ -135,9 +135,9 @@ export default function Home() {
                 <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center mb-3 shadow-sm border border-emerald-50">
                   <ShieldCheck className="w-5 h-5 text-emerald-500" />
                 </div>
-                <h3 className="font-bold text-emerald-900 text-lg mb-1">Уже вели дневник?</h3>
+                <h3 className="font-bold text-emerald-900 text-lg mb-1">Уже вели записи?</h3>
                 <p className="text-emerald-700/70 text-xs mb-4 leading-relaxed">
-                  Если вы ранее создавали резервную копию, вы можете восстановить все записи и фото из вашего файла.
+                  Если вы ранее создавали резервную копию, вы можете восстановить все записи и фото из сохраненного файла.
                 </p>
                 <div className="relative w-full">
                   <Button 
