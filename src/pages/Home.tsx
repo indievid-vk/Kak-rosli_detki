@@ -88,7 +88,7 @@ export default function Home() {
 
   return (
     <div className="p-6 flex flex-col h-full bg-transparent">
-      <header className="mb-4 mt-6 text-center relative">
+      <header className="mb-14 mt-6 text-center relative">
         <AboutApp className="absolute -top-6 -right-2 sm:-right-4 text-orange-400 hover:text-orange-600 hover:bg-orange-50 rounded-full w-10 h-10 p-2 flex items-center justify-center transition-all" />
         <h1 className="text-4xl font-extrabold text-slate-800 mb-3 tracking-tight">Как росли детки</h1>
         <p className="text-slate-600 font-medium max-w-md mx-auto leading-relaxed">
@@ -96,7 +96,7 @@ export default function Home() {
         </p>
         
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-          <DialogTrigger className="absolute -bottom-16 right-0 md:static md:mt-6 inline-flex items-center justify-center rounded-full bg-orange-400 hover:bg-orange-500 text-white w-14 h-14 shadow-md transition-transform hover:scale-105 active:scale-95 z-10">
+          <DialogTrigger className="absolute -bottom-10 right-0 md:static md:mt-6 inline-flex items-center justify-center rounded-full bg-orange-400 hover:bg-orange-500 text-white w-14 h-14 shadow-md transition-transform hover:scale-105 active:scale-95 z-20">
             <Plus className="h-7 w-7" />
           </DialogTrigger>
           <DialogContent className="w-[calc(100vw - 10mm)] h-[calc(100dvh - 10mm)] max-w-md sm:max-w-[500px] sm:h-[85vh] max-h-[100dvh] rounded-[1.5rem] sm:rounded-[2rem] border-0 shadow-xl bg-white/95 backdrop-blur-md p-0 gap-0 overflow-hidden flex flex-col">
