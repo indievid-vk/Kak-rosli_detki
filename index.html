@@ -12,23 +12,42 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Детский Дневник">
 
-    <link rel="manifest" href="manifest.json?v=110">
-    <link rel="icon" type="image/png" href="icon-512.png?v=110">
+    <link rel="manifest" href="/manifest.json?v=110">
+    <link rel="icon" type="image/png" href="/icon-512.png?v=110">
     <!-- Use apple icon as default png since it's already generated well -->
-    <link rel="apple-touch-icon" href="apple-icon.png?v=110">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-icon.png?v=110">
-    <link rel="apple-touch-icon" sizes="152x152" href="apple-icon.png?v=110">
-    <link rel="apple-touch-icon" sizes="167x167" href="apple-icon.png?v=110">
+    <link rel="apple-touch-icon" href="/apple-icon.png?v=110">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon.png?v=110">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon.png?v=110">
+    <link rel="apple-touch-icon" sizes="167x167" href="/apple-icon.png?v=110">
     
     <script>
       // Global error handler for chunk loading errors to prevent white screens
       window.addEventListener('error', (e) => {
-        if (e.message && (e.message.includes('Loading chunk') || e.message.includes('Script error'))) {
+        const msg = e.message || '';
+        if (msg.includes('Loading chunk') || msg.includes('Script error') || msg.includes("Unexpected token '<'") || msg.includes('Unexpected token')) {
           const lastReload = localStorage.getItem('pwa_last_error_reload');
           const now = Date.now();
           if (!lastReload || (now - parseInt(lastReload) > 5000)) {
             localStorage.setItem('pwa_last_error_reload', now.toString());
-            window.location.reload(true);
+            
+            // Try to unregister service workers and clear caches before reloading
+            if ('caches' in window) {
+              caches.keys().then(function(names) {
+                for (let name of names) caches.delete(name);
+              });
+            }
+            if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                  registration.unregister();
+                }
+                setTimeout(() => window.location.reload(true), 100);
+              }).catch(() => {
+                setTimeout(() => window.location.reload(true), 100);
+              });
+            } else {
+              setTimeout(() => window.location.reload(true), 100);
+            }
           }
         }
       }, true);
@@ -58,8 +77,8 @@
     </div>
     
     <!-- PWA Setup Script -->
-    <script src="pwa-setup.js?v=110"></script>
-    <script type="module" src="src/main.tsx"></script>
+    <script src="/pwa-setup.js?v=114"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
 

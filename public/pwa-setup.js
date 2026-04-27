@@ -1,6 +1,6 @@
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-        // Register SW
+        // Use relative path for registration to handle various base URLs (like /Kak-rosli_detki/ or /)
         navigator.serviceWorker.register('sw.js')
             .then(function(registration) {
                 console.log('[PWA] ServiceWorker registered with scope: ', registration.scope);

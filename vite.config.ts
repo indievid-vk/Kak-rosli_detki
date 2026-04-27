@@ -6,7 +6,7 @@ import {defineConfig, loadEnv} from 'vite';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
-    base: '/Kak-rosli_detki/', // Required for GitHub Pages sub-path deployment
+    base: mode === 'production' ? '/Kak-rosli_detki/' : '/', // Use sub-path only for production build (GitHub Pages)
     plugins: [
       react(), 
       tailwindcss()

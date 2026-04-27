@@ -44,7 +44,7 @@ export function BackupFooter() {
 
   return (
     <>
-      <div className="fixed bottom-6 left-0 right-0 z-[100] px-3 pointer-events-none print:hidden">
+      <div className="fixed bottom-6 left-0 right-0 z-[40] px-3 pointer-events-none print:hidden">
         <motion.div 
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -104,47 +104,55 @@ export function BackupFooter() {
       </div>
 
       <Dialog open={showInfo} onOpenChange={setShowInfo}>
-        <DialogContent className="sm:max-w-[400px] border-0 bg-white shadow-2xl rounded-[2.5rem] p-0 overflow-hidden pointer-events-auto">
-          <div className="bg-emerald-50/50 p-8 pt-10 text-center relative">
-            <div className="mx-auto w-16 h-16 rounded-3xl bg-white shadow-sm flex items-center justify-center mb-6">
-              <ShieldCheck className="w-8 h-8 text-emerald-500" strokeWidth={2.5} />
+        <DialogContent className="sm:max-w-[460px] max-h-[85vh] border-0 bg-white shadow-2xl rounded-[2.5rem] p-0 overflow-hidden pointer-events-auto flex flex-col z-[110]">
+          <div className="bg-emerald-50/50 p-6 sm:p-8 pt-8 sm:pt-10 text-center relative shrink-0">
+            <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-white shadow-sm flex items-center justify-center mb-4 sm:mb-6">
+              <ShieldCheck className="w-7 h-7 sm:w-8 sm:h-8 text-emerald-500" strokeWidth={2.5} />
             </div>
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-center mb-2 text-stone-800">
+              <DialogTitle className="text-xl sm:text-2xl font-bold text-center mb-2 text-stone-800">
                 Хранилище данных
               </DialogTitle>
             </DialogHeader>
-            <p className="text-stone-500 leading-relaxed font-medium">
-              Все записи и фото хранятся <span className="font-bold text-slate-800">только внутри памяти браузера</span>. Это обеспечивает полную приватность.
-            </p>
           </div>
-          <div className="p-8">
-            <div className="space-y-5">
-              <p className="text-stone-600 text-[15px] leading-relaxed">
-                Если вы очистите кэш или данные браузера, воспоминания могут исчезнуть навсегда. Поэтому мы создали инструмент безопасности:
-              </p>
-              <div className="flex gap-4">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
-                  <Download className="w-5 h-5 text-emerald-600" strokeWidth={2.5} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-stone-800 text-sm">Сохранение</h4>
-                  <p className="text-stone-500 text-xs mt-1">Регулярно скачивайте файл дневничка. Эту копию можно передавать между устройствами.</p>
-                </div>
+          <div className="px-6 sm:px-8 pb-8 overflow-y-auto custom-scrollbar">
+            <div className="space-y-4 sm:space-y-6">
+              <div className="space-y-3 sm:space-y-4 text-stone-600 text-sm sm:text-[15px] leading-relaxed">
+                <p>
+                  Приложение работает как <span className="font-bold text-slate-800">PWA (Progressive Web App)</span> — современная технология, которая позволяет устанавливать приложение не из магазина приложений, а просто по прямой ссылке. Оно живет прямо в вашем браузере, почти не занимая лишнего места.
+                </p>
+                <p>
+                  Все записи и фото хранятся <span className="font-bold text-slate-800">только внутри памяти браузера</span>. Это обеспечивает полную приватность, но есть нюанс: если вы очистите кэш или данные браузера, воспоминания могут исчезнуть навсегда. Поэтому мы создали инструмент безопасности — <span className="font-bold text-emerald-600">Резервное копирование данных</span>.
+                </p>
+                <p>
+                  Регулярно скачивайте файл дневничка, чтобы обезопасить себя. Эту копию можно передавать между устройствами или даже пересылать друг другу через мессенджеры, чтобы восстановить историю на другом телефоне.
+                </p>
               </div>
-              <div className="flex gap-4">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-                  <Upload className="w-5 h-5 text-blue-500" strokeWidth={2.5} />
+              
+              <div className="pt-2 space-y-4">
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+                    <Download className="w-5 h-5 text-emerald-600" strokeWidth={2.5} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-stone-800 text-sm">Сохранение</h4>
+                    <p className="text-stone-500 text-xs mt-1">Создает файл-архив всех ваших записей и фото.</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold text-stone-800 text-sm">Загрузка</h4>
-                  <p className="text-stone-500 text-xs mt-1">Позволяет восстановить историю из вашего файла (например, на новом телефоне).</p>
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                    <Upload className="w-5 h-5 text-blue-500" strokeWidth={2.5} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-stone-800 text-sm">Загрузка</h4>
+                    <p className="text-stone-500 text-xs mt-1">Восстанавливает историю из вашего файла резервной копии.</p>
+                  </div>
                 </div>
               </div>
             </div>
             <Button 
               onClick={() => setShowInfo(false)} 
-              className="w-full mt-8 py-6 rounded-2xl font-bold bg-stone-900 hover:bg-stone-800 text-white shadow-xl shadow-stone-200 transition-all active:scale-95"
+              className="w-full mt-6 sm:mt-8 py-5 sm:py-6 rounded-2xl font-bold bg-stone-900 hover:bg-stone-800 text-white shadow-xl shadow-stone-200 transition-all active:scale-95"
             >
               Все понятно
             </Button>
@@ -153,7 +161,7 @@ export function BackupFooter() {
       </Dialog>
 
       <Dialog open={!!alert} onOpenChange={() => setAlert(null)}>
-        <DialogContent className="sm:max-w-[400px] border-0 bg-white/95 backdrop-blur-xl shadow-2xl rounded-[2.5rem] p-0 overflow-hidden pointer-events-auto">
+        <DialogContent className="sm:max-w-[400px] border-0 bg-white/95 backdrop-blur-xl shadow-2xl rounded-[2.5rem] p-0 overflow-hidden pointer-events-auto z-[110]">
           <div className={`h-2 ${alert?.type === 'success' ? 'bg-emerald-500' : 'bg-rose-500'}`} />
           <div className="p-8 pt-10 text-center">
             <div className={`mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-6 ${alert?.type === 'success' ? 'bg-emerald-50' : 'bg-rose-50'}`}>
