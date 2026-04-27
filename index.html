@@ -23,6 +23,9 @@
     <script>
       // Global error handler for chunk loading errors to prevent white screens
       window.addEventListener('error', (e) => {
+        // If offline, don't try to reload as it might break things further
+        if (!navigator.onLine) return;
+
         const msg = e.message || '';
         if (msg.includes('Loading chunk') || msg.includes('Script error') || msg.includes("Unexpected token '<'") || msg.includes('Unexpected token')) {
           const lastReload = localStorage.getItem('pwa_last_error_reload');
@@ -52,14 +55,25 @@
         }
       }, true);
 
-      // Fallback: if root is empty after 4 seconds, something is wrong, reload
+      // Fallback: if app didn't boot after 6 seconds (overwriting the loader), reload if online
       setTimeout(() => {
-        const root = document.getElementById('root');
-        if (root && root.innerHTML === '') {
+        const loader = document.getElementById('pwa-loader');
+        // If the loader is still there, it means React hasn't replaced the content of #root
+        if (loader && document.body.contains(loader) && navigator.onLine) {
            console.log('App failed to render, trying forced reload...');
            window.location.reload(true);
         }
-      }, 4000);
+      }, 6000);
+
+      // Update loader text if offline
+      window.addEventListener('load', () => {
+        if (!navigator.onLine) {
+          const p = document.querySelector('#pwa-loader p');
+          if (p) p.textContent = 'Загрузка...';
+          const p2 = document.querySelector('#pwa-loader p:nth-of-type(2)');
+          if (p2) p2.textContent = 'Работаем в автономном режиме';
+        }
+      });
     </script>
   </head>
   <body>
@@ -77,7 +91,7 @@
     </div>
     
     <!-- PWA Setup Script -->
-    <script src="/pwa-setup.js?v=114"></script>
+    <script src="/pwa-setup.js?v=115"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

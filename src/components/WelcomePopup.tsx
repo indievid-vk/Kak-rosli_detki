@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Heart, X } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import confetti from 'canvas-confetti';
 
 export function WelcomePopup() {
   const [isOpen, setIsOpen] = useState(false);
-  const [mode, setMode] = useState<'welcome' | 'update_available' | 'updated'>('welcome');
+  const [mode, setMode] = useState<'welcome' | 'updated'>('welcome');
 
   useEffect(() => {
     const hasSeenWelcome = localStorage.getItem('welcome_seen');
@@ -16,6 +17,29 @@ export function WelcomePopup() {
       setMode('updated');
       setIsOpen(true);
       localStorage.removeItem('pwa_just_updated');
+      
+      // Trigger confetti after a short delay to allow dialog to animate in
+      setTimeout(() => {
+        const duration = 3 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 200 };
+
+        const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+
+        const interval: ReturnType<typeof setInterval> = setInterval(function() {
+          const timeLeft = animationEnd - Date.now();
+
+          if (timeLeft <= 0) {
+            return clearInterval(interval);
+          }
+
+          const particleCount = 50 * (timeLeft / duration);
+          // since particles fall down, start a bit higher than random
+          confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+          confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+        }, 250);
+      }, 500);
+      
       return;
     }
 
@@ -27,43 +51,22 @@ export function WelcomePopup() {
       }, 1000);
       return () => clearTimeout(timer);
     }
-
-    // Listen for PWA update detection
-    const handleUpdate = () => {
-      setMode('update_available');
-      setIsOpen(true);
-    };
-
-    window.addEventListener('pwa-update-available', handleUpdate);
-    return () => window.removeEventListener('pwa-update-available', handleUpdate);
   }, []);
 
   const handleAction = () => {
-    if (mode === 'update_available') {
-      // Set flag so we know we just updated after reload
-      localStorage.setItem('pwa_just_updated', 'true');
-      window.location.reload();
-    } else {
-      if (mode === 'welcome') {
-        localStorage.setItem('welcome_seen', 'true');
-      }
-      setIsOpen(false);
+    if (mode === 'welcome') {
+      localStorage.setItem('welcome_seen', 'true');
     }
+    setIsOpen(false);
   };
 
   const getContent = () => {
     switch (mode) {
       case 'updated':
         return {
-          title: 'Привет!',
-          text: 'Приложение обновилось. Стало ещё удобнее.',
-          button: 'Отлично'
-        };
-      case 'update_available':
-        return {
-          title: 'Обновление!',
-          text: 'Доступна новая версия приложения. Нажмите обновить, чтобы применить изменения.',
-          button: 'Обновить сейчас'
+          title: 'Приложение обновилось',
+          text: 'Стало ещё удобнее!',
+          button: 'Понятно'
         };
       default:
         return {
@@ -97,15 +100,6 @@ export function WelcomePopup() {
             <div className="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center">
               <Heart className="w-10 h-10 text-pink-500 fill-pink-500" />
             </div>
-            {mode === 'update_available' && (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="absolute -top-1 -right-1 w-6 h-6 bg-orange-400 rounded-full flex items-center justify-center border-2 border-white"
-              >
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-              </motion.div>
-            )}
           </motion.div>
 
           <motion.div
@@ -125,7 +119,7 @@ export function WelcomePopup() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleAction}
-            className={`w-full py-4 ${mode === 'update_available' ? 'bg-orange-500' : 'bg-orange-400'} hover:opacity-90 text-white rounded-2xl font-bold transition-all shadow-lg shadow-orange-100 flex items-center justify-center gap-2`}
+            className="w-full py-4 bg-orange-400 hover:opacity-90 text-white rounded-2xl font-bold transition-all shadow-lg shadow-orange-100 flex items-center justify-center gap-2"
           >
             {content.button}
           </motion.button>

@@ -10,6 +10,12 @@ if ('serviceWorker' in navigator) {
                     registration.update();
                 }, 60 * 60 * 1000); // once an hour
 
+                // Also check for updates when browser comes back online
+                window.addEventListener('online', () => {
+                    console.log('[PWA] Connection restored, checking for updates...');
+                    registration.update();
+                });
+
                 registration.addEventListener('updatefound', () => {
                    const newWorker = registration.installing;
                    if (newWorker) {
@@ -33,6 +39,8 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing) {
             refreshing = true;
+            // Set flag so we know we just updated after reload
+            localStorage.setItem('pwa_just_updated', 'true');
             window.location.reload();
         }
     });

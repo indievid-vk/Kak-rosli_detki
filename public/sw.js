@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pwa-diary-v114';
+const CACHE_NAME = 'pwa-diary-v115';
 
 const urlsToCache = [
   './',
@@ -49,12 +49,23 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // STRATEGY: Cache First for other static assets
+    // STRATEGY: Cache First (with background update) for other static assets
     event.respondWith(
-        caches.match(event.request).then(response => {
-            return response || fetch(event.request).catch(() => {
-                // Return nothing if asset not found and offline
+        caches.match(event.request).then(cachedResponse => {
+            const fetchPromise = fetch(event.request).then(networkResponse => {
+                // Cache successful responses from our own origin
+                if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+                    const responseToCache = networkResponse.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, responseToCache);
+                    });
+                }
+                return networkResponse;
+            }).catch(() => {
+                // Silently fail fetch if offline
             });
+
+            return cachedResponse || fetchPromise;
         })
     );
 });

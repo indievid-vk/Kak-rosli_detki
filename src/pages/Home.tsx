@@ -7,16 +7,18 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, Edit2, Camera, Baby, Trash2, X } from 'lucide-react';
+import { Plus, Edit2, Camera, Baby, Trash2, X, ShieldCheck, Upload } from 'lucide-react';
 import { ImageCropperDialog } from '../components/ImageCropperDialog';
 import { AboutApp } from '../components/AboutApp';
+import { importData } from '../lib/db';
 
 export default function Home() {
-  const { children, addChild, updateChild, deleteChild, setIsModalOpen } = useStore();
+  const { children, addChild, updateChild, deleteChild, setIsModalOpen, refreshData } = useStore();
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingChild, setEditingChild] = useState<Child | null>(null);
   const [childToDelete, setChildToDelete] = useState<string | null>(null);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [isImporting, setIsImporting] = useState(false);
 
   const [showHint, setShowHint] = useState(false);
 
@@ -68,6 +70,22 @@ export default function Home() {
     }
   };
 
+  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsImporting(true);
+    try {
+      await importData(file);
+      await refreshData();
+      setAlertMessage("Ура! Данные успешно восстановлены из резервной копии.");
+    } catch(err) {
+      setAlertMessage("Ошибка при восстановлении данных. Проверьте файл.");
+    } finally {
+      setIsImporting(false);
+      e.target.value = '';
+    }
+  };
+
   return (
     <div className="p-6 flex flex-col h-full bg-transparent">
       <header className="mb-10 mt-6 text-center relative">
@@ -102,6 +120,49 @@ export default function Home() {
             </div>
             <p className="text-xl font-bold text-slate-600">Пока нет добавленных детей</p>
             <p className="text-md mt-2 text-slate-500">Нажмите на кнопку + чтобы добавить</p>
+
+            {/* Restore from backup hint */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mt-12 p-6 rounded-[2rem] bg-emerald-50 border border-emerald-100 max-w-sm w-full mx-auto relative overflow-hidden group shadow-sm hover:shadow-md transition-all"
+            >
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <ShieldCheck className="w-20 h-20 text-emerald-500" />
+              </div>
+              <div className="relative z-10 flex flex-col items-center">
+                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-emerald-50">
+                  <ShieldCheck className="w-6 h-6 text-emerald-500" />
+                </div>
+                <h3 className="font-bold text-emerald-900 text-lg mb-2">Уже вели дневник?</h3>
+                <p className="text-emerald-700/70 text-sm mb-6 leading-relaxed">
+                  Если вы ранее создавали резервную копию, вы можете восстановить все записи и фото из вашего файла.
+                </p>
+                <div className="relative w-full">
+                  <Button 
+                    disabled={isImporting}
+                    className="w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl py-6 font-bold flex items-center justify-center gap-3 shadow-lg shadow-emerald-200 transition-all active:scale-95"
+                  >
+                    {isImporting ? (
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <Upload className="w-5 h-5" />
+                        <span>Восстановить данные</span>
+                      </>
+                    )}
+                    <input 
+                      type="file" 
+                      accept=".json" 
+                      onChange={handleImport}
+                      className="absolute inset-0 opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                      disabled={isImporting}
+                    />
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-3xl lg:max-w-none mx-auto">
