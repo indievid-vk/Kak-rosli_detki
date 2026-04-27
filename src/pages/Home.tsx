@@ -88,8 +88,8 @@ export default function Home() {
 
   return (
     <div className="p-6 flex flex-col h-full bg-transparent">
-      <header className="mb-10 mt-6 text-center relative">
-        <AboutApp className="absolute -top-4 -right-2 sm:-right-4 text-slate-400 hover:text-slate-600 hover:bg-slate-100/50 rounded-full w-10 h-10 p-2 flex items-center justify-center" />
+      <header className="mb-4 mt-6 text-center relative">
+        <AboutApp className="absolute -top-6 -right-2 sm:-right-4 text-orange-400 hover:text-orange-600 hover:bg-orange-50 rounded-full w-10 h-10 p-2 flex items-center justify-center transition-all" />
         <h1 className="text-4xl font-extrabold text-slate-800 mb-3 tracking-tight">Как росли детки</h1>
         <p className="text-slate-600 font-medium max-w-md mx-auto leading-relaxed">
           Сохраняйте интересные и важные моменты жизни деток, ведите их Тарабарский словарь ;)
@@ -114,8 +114,8 @@ export default function Home() {
 
       <div className="flex-1 overflow-y-auto pb-24">
         {children.length === 0 ? (
-          <div className="text-center text-slate-400 mt-20 flex flex-col items-center">
-            <div className="w-28 h-28 bg-orange-100/50 rounded-full flex items-center justify-center mb-6 shadow-sm">
+          <div className="text-center text-slate-400 mt-0 flex flex-col items-center">
+            <div className="w-28 h-28 bg-orange-100/50 rounded-full flex items-center justify-center mb-4 shadow-sm">
               <Baby className="h-14 w-14 text-orange-300" />
             </div>
             <p className="text-xl font-bold text-slate-600">Пока нет добавленных детей</p>
@@ -126,23 +126,23 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="mt-12 p-6 rounded-[2rem] bg-emerald-50 border border-emerald-100 max-w-sm w-full mx-auto relative overflow-hidden group shadow-sm hover:shadow-md transition-all"
+              className="mt-6 p-5 rounded-[2rem] bg-emerald-50 border border-emerald-100 max-w-sm w-full mx-auto relative overflow-hidden group shadow-sm hover:shadow-md transition-all"
             >
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <ShieldCheck className="w-20 h-20 text-emerald-500" />
+                <ShieldCheck className="w-16 h-16 text-emerald-500" />
               </div>
               <div className="relative z-10 flex flex-col items-center">
-                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-emerald-50">
-                  <ShieldCheck className="w-6 h-6 text-emerald-500" />
+                <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center mb-3 shadow-sm border border-emerald-50">
+                  <ShieldCheck className="w-5 h-5 text-emerald-500" />
                 </div>
-                <h3 className="font-bold text-emerald-900 text-lg mb-2">Уже вели дневник?</h3>
-                <p className="text-emerald-700/70 text-sm mb-6 leading-relaxed">
+                <h3 className="font-bold text-emerald-900 text-lg mb-1">Уже вели дневник?</h3>
+                <p className="text-emerald-700/70 text-xs mb-4 leading-relaxed">
                   Если вы ранее создавали резервную копию, вы можете восстановить все записи и фото из вашего файла.
                 </p>
                 <div className="relative w-full">
                   <Button 
                     disabled={isImporting}
-                    className="w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl py-6 font-bold flex items-center justify-center gap-3 shadow-lg shadow-emerald-200 transition-all active:scale-95"
+                    className="w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl py-5 font-bold flex items-center justify-center gap-3 shadow-lg shadow-emerald-200 transition-all active:scale-95"
                   >
                     {isImporting ? (
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
