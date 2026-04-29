@@ -3,6 +3,7 @@ const CACHE_NAME = 'pwa-diary-v122';
 /* Version 122 - Improved Stability and Cache Logic */
 
 const urlsToCache = [
+  '/',
   'index.html',
   'manifest.json',
   'pwa-setup.js'
@@ -63,7 +64,7 @@ self.addEventListener('fetch', event => {
     if (event.request.mode === 'navigate') {
         event.respondWith(
             fetch(event.request).catch(() => {
-                return caches.match('index.html');
+                return caches.match('/') || caches.match('index.html');
             })
         );
         return;
