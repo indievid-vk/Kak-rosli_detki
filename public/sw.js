@@ -1,12 +1,16 @@
-const CACHE_NAME = 'pwa-diary-v123';
+const CACHE_NAME = 'pwa-diary-v124';
 
-/* Version 123 - Fixed Relative Paths for Subfolder Support */
+/* Version 124 - Enhanced Offline Support & Search Params Handling */
 
 const urlsToCache = [
   './',
   'index.html',
   'manifest.json',
-  'pwa-setup.js'
+  'pwa-setup.js',
+  'icon-192.png',
+  'icon-512.png',
+  'apple-icon.png',
+  'maskable-icon-512.png'
 ];
 
 self.addEventListener('install', event => {
@@ -16,7 +20,6 @@ self.addEventListener('install', event => {
         caches.open(CACHE_NAME)
             .then(cache => {
                 console.log('[SW] Caching critical assets');
-                // Use map and Promise.allSettled to avoid failing everything if one file is missing
                 return Promise.allSettled(
                     urlsToCache.map(url => {
                         return cache.add(url).catch(err => console.warn(`[SW] Failed to cache ${url}:`, err));
@@ -64,14 +67,15 @@ self.addEventListener('fetch', event => {
     if (event.request.mode === 'navigate') {
         event.respondWith(
             fetch(event.request).catch(() => {
-                return caches.match('./') || caches.match('index.html');
+                return caches.match('./', { ignoreSearch: true }) || 
+                       caches.match('index.html', { ignoreSearch: true });
             })
         );
         return;
     }
 
     event.respondWith(
-        caches.match(event.request).then(cachedResponse => {
+        caches.match(event.request, { ignoreSearch: true }).then(cachedResponse => {
             if (cachedResponse) {
                 // Background update: fetch fresh version and update cache
                 fetch(event.request).then(networkResponse => {
@@ -87,7 +91,7 @@ self.addEventListener('fetch', event => {
             }
 
             return fetch(event.request).then(networkResponse => {
-                // Cache it for next time
+                // Cache it for next time if it's a basic request
                 if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
                     const responseToCache = networkResponse.clone();
                     caches.open(CACHE_NAME).then(cache => {
@@ -98,6 +102,9 @@ self.addEventListener('fetch', event => {
             }).catch(err => {
                 // Return nothing if both fail
                 console.log('[SW] Fetch failed for:', event.request.url);
+                
+                // For images, we could return a placeholder here if we wanted
+                // if (event.request.destination === 'image') return caches.match('icon-192.png');
             });
         })
     );
