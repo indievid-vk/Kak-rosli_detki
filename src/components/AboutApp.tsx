@@ -145,13 +145,22 @@ export function AboutApp({ className }: { className?: string }) {
                  </div>
 
                  <div className="pb-8">
-                    <div className="flex items-center gap-3 mb-3">
-                       <Mail className="w-6 h-6 text-indigo-500" strokeWidth={2.5} />
-                       <h3 className="text-[19px] font-bold text-slate-900">Обратная связь</h3>
-                     </div>
-                     <p className="text-stone-600 leading-relaxed text-[15px]">
-                       Будем рады вашим пожеланиям и предложениям! Пишите нам на почту: <a href="mailto:kak.rosli.detki@mail.ru" className="text-indigo-600 font-bold hover:underline">kak.rosli.detki@mail.ru</a>
-                     </p>
+                    <div className="bg-[#f3ede2] rounded-[32px] p-8 flex flex-col items-center text-center border border-stone-200/40 shadow-sm">
+                       <h3 className="text-[28px] font-serif font-medium text-[#991b1b] mb-6">Обратная связь</h3>
+                       
+                       <a 
+                         href="mailto:indievid_studiio@mail.ru" 
+                         className="w-full bg-[#e9e3d8] hover:bg-[#e1dbcf] transition-colors rounded-[20px] py-5 px-4 flex items-center justify-center gap-3 text-[#5c564e] font-medium text-lg text-decoration-none"
+                       >
+                         <Mail className="w-6 h-6 text-[#5c564e]" />
+                         <span>Написать разработчику</span>
+                       </a>
+                       
+                       <div className="flex items-center gap-2 text-[#96918a] text-[15px] mt-8">
+                         <Heart className="w-4 h-4 fill-[#991b1b] text-[#991b1b]" />
+                         <span>Создано нейрокомандой Индивид СтуИИя</span>
+                       </div>
+                    </div>
                   </div>
             </div>
           </div>
