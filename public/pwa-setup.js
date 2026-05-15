@@ -34,15 +34,24 @@ if ('serviceWorker' in navigator) {
             });
     });
 
-            // Handle controller change (reload after skipWaiting)
+    // Handle controller change (reload after skipWaiting)
     let refreshing = false;
+    // We only want to set the update flag if there was ALREADY a controller (meaning it's an update, not first install)
+    const hadController = !!navigator.serviceWorker.controller;
+    
     navigator.serviceWorker.addEventListener('controllerchange', () => {
         console.log('[PWA] Controller changed! New version is taking over.');
         if (!refreshing) {
             refreshing = true;
-            // Set flag so we know we just updated after reload
-            localStorage.setItem('pwa_just_updated', 'true');
-            console.log('[PWA] Refreshing page to apply update...');
+            
+            // Only show the update popup if we actually had a previous version controlling the page
+            if (hadController) {
+                localStorage.setItem('pwa_just_updated', 'true');
+                console.log('[PWA] Refreshing page to apply update...');
+            } else {
+                console.log('[PWA] First time installation, skipping update notification.');
+            }
+            
             window.location.reload();
         }
     });
