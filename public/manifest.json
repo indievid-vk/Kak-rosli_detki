@@ -1,6 +1,4 @@
 {
-  "manifest_version": 2,
-  "version": "1.0.4",
   "short_name": "Как росли детки",
   "name": "Как росли детки - Дневник развития ребенка",
   "description": "Приложение для отслеживания событий и развития ребенка",
@@ -11,15 +9,28 @@
   "lang": "ru",
   "icons": [
     {
-      "src": "icon-512.png",
-      "type": "image/png",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "maskable-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "apple-icon.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "type": "image/png"
     }
-  ]
+  ],
+  "orientation": "portrait"
 }

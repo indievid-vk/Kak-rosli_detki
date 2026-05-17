@@ -1,6 +1,6 @@
-const CACHE_NAME = 'pwa-diary-v124';
+const CACHE_NAME = 'pwa-diary-v125';
 
-/* Version 124 - Enhanced Offline Support & Search Params Handling */
+/* Version 125 - Robust Offline Support */
 
 const urlsToCache = [
   './',
@@ -14,15 +14,14 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', event => {
-    console.log('[SW] Install event started');
+    console.log('[SW] Install: caching shell');
     self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('[SW] Caching critical assets');
                 return Promise.allSettled(
                     urlsToCache.map(url => {
-                        return cache.add(url).catch(err => console.warn(`[SW] Failed to cache ${url}:`, err));
+                        return cache.add(url).catch(err => console.warn(`[SW] Initial cache failed for ${url}:`, err));
                     })
                 );
             })
@@ -30,21 +29,17 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-    console.log('[SW] Activate event started');
+    console.log('[SW] Activate: cleaning old caches');
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('[SW] Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
-        }).then(() => {
-            console.log('[SW] Taking control of clients');
-            return self.clients.claim();
-        })
+        }).then(() => self.clients.claim())
     );
 });
 
@@ -53,7 +48,7 @@ self.addEventListener('fetch', event => {
 
     const url = new URL(event.request.url);
 
-    // Skip dev tools, vite internal stuff, HMR etc.
+    // Skip development-only resources
     if (
         url.hostname === 'localhost' || 
         url.pathname.includes('@vite') || 
@@ -63,7 +58,7 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // STRATEGY: Network First for navigation (index.html), Cache First for assets
+    // Navigation requests: Network-First (with offline fallback to index.html)
     if (event.request.mode === 'navigate') {
         event.respondWith(
             fetch(event.request).catch(() => {
@@ -74,25 +69,13 @@ self.addEventListener('fetch', event => {
         return;
     }
 
+    // Assets: Stale-While-Revalidate strategy
     event.respondWith(
         caches.match(event.request, { ignoreSearch: true }).then(cachedResponse => {
-            if (cachedResponse) {
-                // Background update: fetch fresh version and update cache
-                fetch(event.request).then(networkResponse => {
-                    if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-                        const responseToCache = networkResponse.clone();
-                        caches.open(CACHE_NAME).then(cache => {
-                            cache.put(event.request, responseToCache);
-                        });
-                    }
-                }).catch(() => {/* Ignore background update errors */});
-                
-                return cachedResponse;
-            }
-
-            return fetch(event.request).then(networkResponse => {
-                // Cache it for next time if it's a basic request
-                if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+            const fetchPromise = fetch(event.request).then(networkResponse => {
+                // Cache successful responses
+                // We allow 'cors' and 'opaque' (type 'opaque' is for CDN assets like Google Fonts)
+                if (networkResponse && networkResponse.status === 200) {
                     const responseToCache = networkResponse.clone();
                     caches.open(CACHE_NAME).then(cache => {
                         cache.put(event.request, responseToCache);
@@ -100,12 +83,11 @@ self.addEventListener('fetch', event => {
                 }
                 return networkResponse;
             }).catch(err => {
-                // Return nothing if both fail
-                console.log('[SW] Fetch failed for:', event.request.url);
-                
-                // For images, we could return a placeholder here if we wanted
-                // if (event.request.destination === 'image') return caches.match('icon-192.png');
+                console.log('[SW] Network failed for:', event.request.url);
+                // If network fails and no cache, we just let it fail or return fallback image
             });
+
+            return cachedResponse || fetchPromise;
         })
     );
 });
